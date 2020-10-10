@@ -170,6 +170,11 @@ $(document).keydown(function (event) {
   }
 });
 
+
+document.body.addEventListener('touchmove', function(evt) {
+  evt.preventDefault();
+});
+
 document.addEventListener('touchmove',function(event){
   event.preventDefault()
 })
