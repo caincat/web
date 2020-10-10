@@ -1,9 +1,14 @@
+documentWidth =window.screen.availWidth;
+gridContainerWidth=0.92 * documentWidth
+celllSideLength =0.18 * documentWidth
+cellSpace =0.04 * documentWidth
+
 function getPosTop(i,j){
-  return 20 +i*120;
+  return cellSpace +i*(cellSpace+celllSideLength);
 }
 
 function getPosLeft(i,j){
-  return 20+j*120;
+  return cellSpace+j*(cellSpace+celllSideLength);
 }
 
 function getNumberBackgroundColor(number){
@@ -30,6 +35,25 @@ function getNumberColor(number){
     return "#776e65"
   }
   return "white"
+}
+
+function getNumberText( number ){
+  switch( number ){
+      case 2:return "2";break;
+      case 4:return "4";break;
+      case 8:return "8";break;
+      case 16:return "16";break;
+      case 32:return "32";break;
+      case 64:return "64";break;
+      case 128:return "128";break;
+      case 256:return "256";break;
+      case 512:return "512";break;
+      case 1024:return "1024";break;
+      case 2048:return "2048";break;
+      case 4096:return "4096";break;
+      case 8192:return "8192";break;
+  }
+  return "black";
 }
 
 function nospace(board){
@@ -67,7 +91,27 @@ function canMoveRight(board){
 }
 
 function canMoveUp(board){
+  for(var j=0;j<4;j++)
+    for(var i=1;i<4;i++){
+      if(board[i][j]!=0){
+        if(board[i-1][j]==0||board[i-1][j]==board[i][j])
+          return true
+      }
+    }
   
+  return false;
+}
+
+function canMoveDown(board){
+  for(var j=0;j<4;j++)
+    for(var i=2;i>=0;i--){
+      if(board[i][j]!=0){
+        if(board[i+1][j]==0||board[i+1][j]==board[i][j])
+          return true
+      }
+    }
+  
+  return false;
 }
 
 function noBlockHorizontal(row,col1,col2,board){
@@ -77,4 +121,23 @@ function noBlockHorizontal(row,col1,col2,board){
     }
   }
   return true
+}
+
+function noBlockVertical( col , row1 , row2 , board ){
+  for( var i = row1 + 1 ; i < row2 ; i ++ ){
+    if( board[i][col] != 0 ){
+      return false;
+    }
+  }
+  return true;
+}
+
+function nomove( board ){
+  if( canMoveLeft( board ) ||
+      canMoveRight( board ) ||
+      canMoveUp( board ) ||
+      canMoveDown( board ) )
+      return false;
+
+  return true;
 }
