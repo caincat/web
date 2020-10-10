@@ -39,19 +39,19 @@ function getNumberColor(number){
 
 function getNumberText( number ){
   switch( number ){
-      case 2:return "2";break;
-      case 4:return "4";break;
-      case 8:return "8";break;
-      case 16:return "16";break;
-      case 32:return "32";break;
-      case 64:return "64";break;
-      case 128:return "128";break;
-      case 256:return "256";break;
-      case 512:return "512";break;
-      case 1024:return "1024";break;
-      case 2048:return "2048";break;
-      case 4096:return "4096";break;
-      case 8192:return "8192";break;
+      case 2:return "2k";break;
+      case 4:return "4k";break;
+      case 8:return "8k";break;
+      case 16:return "16k";break;
+      case 32:return "32k";break;
+      case 64:return "64k";break;
+      case 128:return "128k";break;
+      case 256:return "256k";break;
+      case 512:return "512k";break;
+      case 1024:return "1024k";break;
+      case 2048:return "2048k";break;
+      case 4096:return "4096k";break;
+      case 8192:return "8192k";break;
   }
   return "black";
 }

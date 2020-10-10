@@ -7,14 +7,22 @@ var board = new Array();
 var score = 0;
 var hasConflicted = new Array();
 
-var startx=0;
-var starty=0;
-var endx=0;
-var endy=0;
+var startx = 0;
+var starty = 0;
+var endx = 0;
+var endy = 0;
 
 $(document).ready(function () {
   prepareForMobile();
   newgame();
+  //先禁止页面触摸
+  document.body.addEventListener(
+    "touchmove",
+    function (e) {
+      e.preventDefault();
+    },
+    { passive: false }
+  );
 });
 
 function prepareForMobile() {
@@ -31,7 +39,6 @@ function prepareForMobile() {
 
   $(".grid-cell").css("width", celllSideLength);
   $(".grid-cell").css("height", celllSideLength);
-  $(".grid-cell").css("border-radius", 0.02 * celllSideLength);
 }
 
 function newgame() {
@@ -95,7 +102,7 @@ function updateBoardView() {
       hasConflicted[i][j] = false;
     }
   $(".number-cell").css("line-height", celllSideLength + "px");
-  $(".number-cell").css("font-size", 0.6 * celllSideLength + "px");
+  $(".number-cell").css("font-size", 0.3 * celllSideLength + "px");
 }
 
 function generateOneNumber() {
@@ -137,28 +144,28 @@ function generateOneNumber() {
 $(document).keydown(function (event) {
   switch (event.keyCode) {
     case 37: //left
-      event.preventDefault()
+      event.preventDefault();
       if (moveLeft()) {
         setTimeout("generateOneNumber()", 210);
         setTimeout("isgameover()", 300);
       }
       break;
     case 38: //up
-      event.preventDefault()
+      event.preventDefault();
       if (moveUp()) {
         setTimeout("generateOneNumber()", 210);
         setTimeout("isgameover()", 300);
       }
       break;
     case 39: //right
-      event.preventDefault()
+      event.preventDefault();
       if (moveRight()) {
         setTimeout("generateOneNumber()", 210);
         setTimeout("isgameover()", 300);
       }
       break;
     case 40: //down
-      event.preventDefault()
+      event.preventDefault();
       if (moveDown()) {
         setTimeout("generateOneNumber()", 210);
         setTimeout("isgameover()", 300);
@@ -170,53 +177,51 @@ $(document).keydown(function (event) {
   }
 });
 
+// document.addEventListener('touchmove',function(event){
+//   event.preventDefault()
+// })
 
-document.body.addEventListener('touchmove', function(evt) {
-  evt.preventDefault();
+document.addEventListener("touchstart", function (event) {
+  startx = event.touches[0].pageX;
+  starty = event.touches[0].pageY;
 });
 
-document.addEventListener('touchmove',function(event){
-  event.preventDefault()
-})
+document.addEventListener("touchend", function (event) {
+  endx = event.changedTouches[0].pageX;
+  endy = event.changedTouches[0].pageY;
 
-document.addEventListener('touchstart',function(event){
-  startx=event.touches[0].pageX
-  starty=event.touches[0].pageY
-})
+  var deltax = endx - startx;
+  var deltay = endy - starty;
 
-document.addEventListener('touchend',function(event){
-  endx=event.changedTouches[0].pageX
-  endy=event.changedTouches[0].pageY
-
-  var deltax=endx-startx
-  var deltay=endy-starty
-
-  if(Math.abs(deltax)<0.1*documentWidth && Math.abs(deltay)<0.1*documentWidth){
-    return
+  if (
+    Math.abs(deltax) < 0.1 * documentWidth &&
+    Math.abs(deltay) < 0.1 * documentWidth
+  ) {
+    return;
   }
 
-  if(Math.abs(deltax)>=Math.abs(deltay)){
-    if(deltax>0){
+  if (Math.abs(deltax) >= Math.abs(deltay)) {
+    if (deltax > 0) {
       //move right
       if (moveRight()) {
         setTimeout("generateOneNumber()", 210);
         setTimeout("isgameover()", 300);
       }
-    }else{
+    } else {
       //move left
       if (moveLeft()) {
         setTimeout("generateOneNumber()", 210);
         setTimeout("isgameover()", 300);
       }
     }
-  }else{
-    if(deltay>0){
+  } else {
+    if (deltay > 0) {
       //move down
       if (moveDown()) {
         setTimeout("generateOneNumber()", 210);
         setTimeout("isgameover()", 300);
       }
-    }else{
+    } else {
       //move up
       if (moveUp()) {
         setTimeout("generateOneNumber()", 210);
@@ -224,8 +229,7 @@ document.addEventListener('touchend',function(event){
       }
     }
   }
-})
-
+});
 
 function isgameover() {
   if (nospace(board) && nomove(board)) {
